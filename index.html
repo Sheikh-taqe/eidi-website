@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eid Distribution App</title>
+  <style>
+    /* Add your CSS styles here */
+  </style>
+</head>
+<body>
+  <h1>Eid Distribution</h1>
+  <label for="userName">Your Name:</label>
+  <input type="text" id="userName"><br>
+  <label for="totalAmount">Total Amount:</label>
+  <input type="number" id="totalAmount" min="0"><br>
+  <label for="numPeople">Number of People:</label>
+  <input type="number" id="numPeople" min="0"><br>
+  <button onclick="distribute()">Distribute</button><br>
+  <div id="distributionResult"></div>
+
+  <script>
+    function distribute() {
+      var userName = document.getElementById('userName').value.trim();
+      var totalAmount = parseFloat(document.getElementById('totalAmount').value);
+      var numPeople = parseInt(document.getElementById('numPeople').value);
+      if (userName === '' || isNaN(totalAmount) || isNaN(numPeople) || totalAmount <= 0 || numPeople <= 0) {
+        alert("Please fill all the fields with valid values.");
+        return;
+      }
+
+      var amountPerPerson = totalAmount / numPeople;
+      var notes = [1000, 500, 100, 50, 20, 10];
+      var notesCount = {};
+
+      notes.forEach(function (note) {
+        notesCount[note] = Math.floor(amountPerPerson / note);
+        amountPerPerson %= note;
+      });
+
+      var distributionResult = "<h2>Hi " + userName + "!</h2><p>Here's your Eidi distribution:</p><ul>";
+      for (var note in notesCount) {
+        if (notesCount.hasOwnProperty(note)) {
+          distributionResult += "<li>" + notesCount[note] + " x " + note + " PKR notes</li>";
+        }
+      }
+      distributionResult += "</ul>";
+
+      document.getElementById('distributionResult').innerHTML = distributionResult;
+    }
+  </script>
+</body>
+</html>
+
